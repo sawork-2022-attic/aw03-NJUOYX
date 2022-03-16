@@ -114,9 +114,9 @@
 		<figcaption class="info-wrap">
 			<a href="#" class="title"><span th:text="${product.name}"></span></a>
 			<div class="action-wrap">
-				<a href="#" class="btn btn-primary btn-sm float-right"> <i class="fa fa-cart-plus"></i> Add </a>
+				<a th:href="@{/add?pid={pid}(pid=${product.id})}" class="btn btn-primary btn-sm float-right"> <i class="fa fa-cart-plus"></i> Add </a>
 				<div class="price-wrap h5">
-					<span class="price-new">$1280</span>
+					<span th:text="${'￥' + product.price}" class="price-new"></span>
 				</div> <!-- price-wrap.// -->
 			</div> <!-- action-wrap -->
 		</figcaption>
@@ -140,7 +140,7 @@
 </thead>
 <tbody>
 
-<tr th:each="item : ${cart.items}">
+<tr th:each="item :${cart.items}">
 	<td>
 <figure class="media">
 	<div class="img-wrap"><img th:src="@{${'/images/items/'+ item.product.image}}"
@@ -152,24 +152,27 @@
 	</td>
 	<td class="text-center"> 
 		<div class="m-btn-group m-btn-group--pill btn-group mr-2" role="group" aria-label="...">
+                                                                        <a th:href="@{/item/remove?pid={pid}(pid=${itemStat.index})}">
 																		<button type="button"
-                                                                                class="m-btn btn btn-default"><i
-                                                                                class="fa fa-minus"></i></button>
+                                                                                class="m-btn btn btn-default">
+                                                                            <i class="fa fa-minus"></i></button></a>
 																		<button type="button"
                                                                                 class="m-btn btn btn-default"
                                                                                 disabled><span th:text="${item.quantity}"></span></button>
+                                                                        <a th:href="@{/item/add?pid={pid}(pid=${itemStat.index})}">
 																		<button type="button"
                                                                                 class="m-btn btn btn-default"><i
-                                                                                class="fa fa-plus"></i></button>
+                                                                                class="fa fa-plus">
+                                                                        </i></button></a>
 																	</div>
 	</td>
 	<td> 
 		<div class="price-wrap"> 
-			<var class="price"><span th:text="${item.product.price}"></span></var>
+			<var class="price"><span th:text="${'￥' + item.product.price}"></span></var>
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right"> 
-	<a href="" class="btn btn-outline-danger"> <i class="fa fa-trash"></i></a>
+	<a th:href="@{/item/delete?pid={pid}(pid=${itemStat.index})}" class="btn btn-outline-danger"> <i class="fa fa-trash"></i></a>
 	</td>
 </tr>
 </tbody>
@@ -178,28 +181,16 @@
                 </div> <!-- card.// -->
                 <div class="box">
                     <dl class="dlist-align">
-                        <dt>Tax:</dt>
-                        <dd class="text-right">12%</dd>
-                    </dl>
-                    <dl class="dlist-align">
-                        <dt>Discount:</dt>
-                        <dd class="text-right"><a href="#">0%</a></dd>
-                    </dl>
-                    <dl class="dlist-align">
-                        <dt>Sub Total:</dt>
-                        <dd class="text-right">$215</dd>
-                    </dl>
-                    <dl class="dlist-align">
                         <dt>Total:</dt>
-                        <dd class="text-right h4 b"> $215</dd>
+                        <dd th:text="${'￥' + cart.total}" class="text-right h4 b"></dd>
                     </dl>
                     <div class="row">
                         <div class="col-md-6">
-                            <a href="#" class="btn  btn-default btn-error btn-lg btn-block"><i
+                            <a th:href="@{/cancel}" class="btn  btn-default btn-error btn-lg btn-block"><i
                                     class="fa fa-times-circle "></i> Cancel </a>
                         </div>
                         <div class="col-md-6">
-                            <a href="#" class="btn  btn-primary btn-lg btn-block"><i class="fa fa-shopping-bag"></i>
+                            <a th:href="@{/charge}" class="btn  btn-primary btn-lg btn-block"><i class="fa fa-shopping-bag"></i>
                                 Charge </a>
                         </div>
                     </div>
